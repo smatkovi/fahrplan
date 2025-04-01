@@ -1,6 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>src/gui/fremantle/main.qml</file>
+        <file>src/gui/fremantle/SettingsPage.qml</file>
+        <file>src/gui/fremantle/StationSelectPage.qml</file>
+        <file>src/gui/fremantle/JourneyResultsPage.qml</file>
+        <file>src/gui/fremantle/JourneyDetailsPage.qml</file>
         <file>src/gui/fremantle/hildon/hildon.js</file>
         <file>src/gui/fremantle/hildon/HildonButton.qml</file>
         <file>src/gui/fremantle/hildon/HildonDialog.qml</file>

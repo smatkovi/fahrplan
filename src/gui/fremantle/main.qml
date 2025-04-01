@@ -16,24 +16,82 @@
 **  with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
-
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
+import Fahrplan 1.0
 import "hildon"
 import "components" as MyComponents
 
 HildonWindow {
     width: 800
     height: 480
+    visible: true
 
-    MyComponents.SubTitleButton {
-        id: departureButton
-        titleText: "Departure Station"
-        subTitleText: "please select"
-        width: parent.width
-        onClicked: {
+    FahrplanBackend {
+        id: fahrplanBackend
+    }
 
+    Loader {
+        id: pageLoader
+        anchors.fill: parent
+        sourceComponent: mainPage
+    }
+
+    Component {
+        id: mainPage
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 12
+                spacing: 12
+
+                MyComponents.SubTitleButton {
+                    titleText: "Departure Station"
+                    subTitleText: fahrplanBackend.departureStationName
+                    onClicked: {
+                        pageLoader.setSource("StationSelectPage.qml", {
+                            "selectingDeparture": true
+                        })
+                    }
+                }
+
+                MyComponents.SubTitleButton {
+                    titleText: "Arrival Station"
+                    subTitleText: fahrplanBackend.arrivalStationName
+                    onClicked: {
+                        pageLoader.setSource("StationSelectPage.qml", {
+                            "selectingDeparture": false
+                        })
+                    }
+                }
+
+                ComboBox {
+                    model: ["Now", "Departure", "Arrival"]
+                    currentIndex: fahrplanBackend.mode
+                    onCurrentIndexChanged: fahrplanBackend.mode = currentIndex
+                }
+
+                Button {
+                    text: "Search Journey"
+                    onClicked: {
+                        fahrplanBackend.searchJourneys()
+                        pageLoader.source = "JourneyResultsPage.qml"
+                    }
+                }
+
+                Button {
+                    text: "Settings"
+                    onClicked: {
+                        pageLoader.source = "SettingsPage.qml"
+                    }
+                }
+            }
         }
     }
 }
+
