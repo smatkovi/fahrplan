@@ -20,8 +20,6 @@
 #include "fahrplan.h"
 #include "fahrplan_parser_thread.h"
 #include "fahrplan_backend_manager.h"
-#include "calendarthreadwrapper.h"
-#include "calendar_sfos_wrapper.h"
 #include "models/favorites.h"
 #include "models/stationsearchresults.h"
 #include "models/timetable.h"
@@ -118,14 +116,6 @@ QString Fahrplan::getVersion()
     return FAHRPLAN_VERSION;
 }
 
-bool Fahrplan::supportsCalendar()
-{
-#if defined(BUILD_FOR_BLACKBERRY) || defined(BUILD_FOR_HARMATTAN) || defined(BUILD_FOR_MAEMO_5) || defined(BUILD_FOR_SYMBIAN) || (defined(BUILD_FOR_OPENREPOS) && defined(BUILD_FOR_SAILFISHOS))
-    return true;
-#else
-    return false;
-#endif
-}
 
 StationSearchResults *Fahrplan::stationSearchResults() const
 {
@@ -387,28 +377,6 @@ void Fahrplan::setParser(int index)
     m_parser_manager->setParser(index);
 }
 
-void Fahrplan::addJourneyDetailResultToCalendar(JourneyDetailResultList *result)
-{
-
-#if defined(BUILD_FOR_SAILFISHOS)
-    CalendarSfosWrapper *wrapper = new CalendarSfosWrapper(result,this);
-    //connect( this, wrapper, SLOT( addToCalendar() ),this, SIGNAL(addCalendarEntryComplete(bool))  );
-    connect(wrapper,SIGNAL(addCalendarEntryComplete(bool)), SIGNAL(addCalendarEntryComplete(bool)));
-    wrapper->addToCalendar();
-
-#else
-    QThread *workerThread = new QThread(this);
-    CalendarThreadWrapper *wrapper = new CalendarThreadWrapper(result);
-
-    connect(workerThread, SIGNAL(started()), wrapper, SLOT(addToCalendar()));
-    connect(workerThread, SIGNAL(finished()), wrapper, SLOT(deleteLater()));
-    connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
-    connect(wrapper,SIGNAL(addCalendarEntryComplete(bool)), SIGNAL(addCalendarEntryComplete(bool)));
-
-    wrapper->moveToThread(workerThread);
-    workerThread->start();
-#endif
-}
 
 Station Fahrplan::getStation(StationType type) const
 {

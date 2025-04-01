@@ -43,7 +43,6 @@ class Fahrplan : public QObject
     Q_PROPERTY(QString parserName READ parserName NOTIFY parserChanged)
     Q_PROPERTY(QString parserShortName READ parserShortName NOTIFY parserChanged)
     Q_PROPERTY(QString version READ getVersion CONSTANT)
-    Q_PROPERTY(bool supportsCalendar READ supportsCalendar CONSTANT)
 
     Q_PROPERTY(StationSearchResults *stationSearchResults READ stationSearchResults CONSTANT)
     Q_PROPERTY(Favorites *favorites READ favorites CONSTANT)
@@ -84,7 +83,6 @@ class Fahrplan : public QObject
         QString parserName() const;
         QString parserShortName() const;
         QString getVersion();
-        bool supportsCalendar();
 
         StationSearchResults *stationSearchResults() const;
         Timetable *timetable() const;
@@ -115,7 +113,6 @@ class Fahrplan : public QObject
         void findStationsByCoordinates(qreal longitude, qreal latitude);
         void getTimeTable();
         void searchJourney();
-        void addJourneyDetailResultToCalendar(JourneyDetailResultList *result);
         void setTrainrestriction(int index);
 
     signals:
@@ -135,7 +132,6 @@ class Fahrplan : public QObject
         void parserTimeTableResult();
         void parserErrorOccured(const QString &msg);
         void parserChanged(const QString &name, int index);
-        void addCalendarEntryComplete(bool success);
 
     private slots:
         void setStation(Fahrplan::StationType type, const Station &station);

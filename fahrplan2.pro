@@ -2,16 +2,18 @@
 APP_NAME = Fahrplan
 
 # Define Version
-VERSION = 2.0.43-1
+VERSION = 2.0.47-2
 
 #CONFIG+= openrepos
 
-DEFINES += BUILD_FOR_SAILFISHOS
+DEFINES += BUILD_FOR_MAEMO_5
+QT += qml quick core gui
 
-# Switch for jolla to separate harbour and openrepo version
-openrepos {
-    DEFINES += BUILD_FOR_OPENREPOS
-}
+#
+## Switch for jolla to separate harbour and openrepo version
+#openrepos {
+#    DEFINES += BUILD_FOR_OPENREPOS
+#}
 
 MOC_DIR = tmp
 UI_DIR = tmp
@@ -50,7 +52,7 @@ exists($$QMAKE_INCDIR_QT"/../qmsystem2/qmkeys.h"):!contains(MEEGO_EDITION,harmat
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
 
-QT += network xml
+QT += network xml widgets 
 lessThan(QT_MAJOR_VERSION, 5) {
     QT += declarative script
 } else {
@@ -104,10 +106,7 @@ unix:!symbian: LIBS += -lz
 HEADERS += \
     src/fahrplan.h \
     src/fahrplan_backend_manager.h \
-    src/calendarthreadwrapper.h \
-    src/calendar_sfos_wrapper.h \
     src/fahrplan_parser_thread.h \
-    src/fahrplan_calendar_manager.h \
     src/models/backends.h \
     src/models/stationslistmodel.h \
     src/models/favorites.h \
@@ -116,7 +115,7 @@ HEADERS += \
     src/models/trainrestrictions.h \
     src/parser/parser_xmlnri.h \
     src/parser/parser_hafasbinary.h \
-    src/parser/parser_mobilebahnde.h \
+    src/parser/parser_movas_bahnde.h \
     src/parser/parser_ptvvicgovau.h \
     src/parser/parser_efa.h \
     src/parser/parser_ireland_efa.h \
@@ -133,22 +132,20 @@ HEADERS += \
     src/parser/parser_xmlrejseplanendk.h \
     src/parser/parser_xmloebbat.h \
     src/parser/parser_xmlvasttrafikse.h \
-    src/parser/parser_search_ch.h 
+    src/parser/parser_search_ch.h \
+    src/gui/fremantle/hildon_helper.h 
 
 SOURCES += src/main.cpp \
     src/fahrplan.cpp \
     src/fahrplan_backend_manager.cpp \
-    src/calendarthreadwrapper.cpp \
-    src/calendar_sfos_wrapper.cpp \
     src/fahrplan_parser_thread.cpp \
-    src/fahrplan_calendar_manager.cpp \
     src/models/backends.cpp \
     src/models/stationslistmodel.cpp \
     src/models/favorites.cpp \
     src/models/stationsearchresults.cpp \
     src/models/timetable.cpp \
     src/models/trainrestrictions.cpp \
-    src/parser/parser_mobilebahnde.cpp \
+    src/parser/parser_movas_bahnde.cpp \
     src/parser/parser_xmlnri.cpp \
     src/parser/parser_hafasbinary.cpp \
     src/parser/parser_ptvvicgovau.cpp \
@@ -167,10 +164,14 @@ SOURCES += src/main.cpp \
     src/parser/parser_xmlrejseplanendk.cpp \
     src/parser/parser_xmloebbat.cpp \
     src/parser/parser_xmlvasttrafikse.cpp \
-    src/parser/parser_search_ch.cpp
+    src/parser/parser_search_ch.cpp \
+    src/gui/fremantle/hildon_helper.cpp 
 
+RESOURCES += fremantle_res.qrc
+INCLUDEPATH += /usr/include/aarch64-linux-gnu/qt5/QtMaemo5
 
 LIBS += $$PWD/3rdparty/gauss-kruger-cpp/gausskruger.cpp
+
 
 # This hack is needed for lupdate to pick up texts from QML files
 translate_hack {

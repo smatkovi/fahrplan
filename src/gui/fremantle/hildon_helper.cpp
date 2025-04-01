@@ -18,6 +18,7 @@
 ****************************************************************************/
 
 #include "hildon_helper.h"
+#include <QApplication>
 
 HildonHelper::HildonHelper(QObject *parent) :
     QObject(parent)
@@ -26,10 +27,13 @@ HildonHelper::HildonHelper(QObject *parent) :
 
 QColor HildonHelper::standardColor(const QString &name)
 {
-    return QMaemo5Style::standardColor(name);
+    Q_UNUSED(name);
+    return QApplication::palette().color(QPalette::Button);  // Safe fallback
 }
 
 QFont HildonHelper::standardFont(const QString &name)
 {
-    return QMaemo5Style::standardFont(name);
+    Q_UNUSED(name);
+    return QApplication::font();  // Default app font
 }
+

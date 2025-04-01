@@ -5,7 +5,9 @@
 
 Name:       harbour-fahrplan2
 
+
 # >> macros
+%define _binary_payload w2.xzdio
 # << macros
 
 %{!?qtc_qmake:%define qtc_qmake %qmake}
@@ -13,8 +15,8 @@ Name:       harbour-fahrplan2
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Public transportation application
-Version:    2.0.44
-Release:    1
+Version:    2.0.47
+Release:    2
 Group:      Location/Location Adaptation
 License:    GPLv2
 URL:        http://fahrplan.smurfy.de

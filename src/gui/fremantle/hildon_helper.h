@@ -17,14 +17,11 @@
 **
 ****************************************************************************/
 
-#ifndef HILDON_HELPER_H
-#define HILDON_HELPER_H
-
+#pragma once
 #include <QObject>
-#include "qcolor.h"
-#include "qfont.h"
-#include "QMaemo5Style"
-#include <QtMaemo5>
+#include <QColor>
+#include <QFont>
+#include "/usr/include/aarch64-linux-gnu/qt5/QtMaemo5/qmaemo5style.h"
 
 class HildonHelper : public QObject
 {
@@ -39,4 +36,4 @@ class HildonHelper : public QObject
 
 };
 
-#endif // HILDON_HELPER_H
+

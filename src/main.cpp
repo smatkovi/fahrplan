@@ -20,9 +20,20 @@
 #include <ctime>
 
 #include <QtCore/QTranslator>
+#include <QApplication>
+#include <QStyleFactory>
+#include <QQuickView>
+#include <QtQml>
+#include <QQmlEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include "gui/fremantle/hildon_helper.h"
 
 #if defined(BUILD_FOR_HARMATTAN) || defined(BUILD_FOR_MAEMO_5) || defined(BUILD_FOR_SYMBIAN) || defined(BUILD_FOR_BLACKBERRY)
-    #include <QtDeclarative>
+#include <QtQml>
+#include <QQmlEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
 #elif defined(BUILD_FOR_UBUNTU)
     #include <QGuiApplication>
     #include <QtQuick>
@@ -62,7 +73,6 @@
 #include "fahrplan.h"
 #include "parser/parser_abstract.h"
 #include "fahrplan_parser_thread.h"
-#include "fahrplan_calendar_manager.h"
 #include "models/stationsearchresults.h"
 #include "models/favorites.h"
 #include "models/timetable.h"
@@ -146,19 +156,13 @@ int main(int argc, char *argv[])
             app->setOrganizationName("de.smurfy");
     #endif
 
-    qRegisterMetaType<Station>();
-    qRegisterMetaType<StationsList>();
-    qRegisterMetaType<TimetableEntry>();
-    qRegisterMetaType<TimetableEntriesList>();
-    qRegisterMetaType<Fahrplan::StationType>();
-    qRegisterMetaType<Fahrplan::Mode>();
+
 
     #if defined(BUILD_FOR_HARMATTAN) || defined(BUILD_FOR_MAEMO_5) || defined(BUILD_FOR_SYMBIAN) || defined(BUILD_FOR_BLACKBERRY) || defined(BUILD_FOR_UBUNTU) || defined(BUILD_FOR_SAILFISHOS)
         qDebug()<<"QML";
         qmlRegisterType<Fahrplan>("Fahrplan", 1, 0, "FahrplanBackend");
         qmlRegisterType<ParserAbstract>("Fahrplan", 1, 0, "ParserAbstract");
         qmlRegisterType<FahrplanParserThread>("Fahrplan", 1, 0, "FahrplanParserThread");
-        qmlRegisterType<FahrplanCalendarManager>("Fahrplan", 1, 0, "CalendarManager");
         qmlRegisterUncreatableType<StationSearchResults>("Fahrplan", 1, 0, "StationSearchResults"
             , "StationSearchResults cannot be created from QML. "
               "Access it through FahrplanBackend.stationSearchResults.");
@@ -263,6 +267,7 @@ int main(int argc, char *argv[])
         settings.setValue("geometry", view->geometry());
     #endif
 
+QApplication::setStyle(QStyleFactory::create("qmaemo5style"));
 #ifndef Q_OS_BLACKBERRY
     // For some reason, this causes a weird freeze of
     // Fahrplan on BlackBerry 10 so that it can only

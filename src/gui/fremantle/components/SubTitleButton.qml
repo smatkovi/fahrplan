@@ -17,7 +17,7 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 2.0
 
 import "../hildon/hildon.js" as Hildon
 import "../hildon/style.js" as Style
